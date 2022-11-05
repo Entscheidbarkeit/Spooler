@@ -1,6 +1,6 @@
 .PHONY: all run
 
-all: hexdump
+all: spooler
 
 #############################################################
 # DON'T change the variable names of INCLUDEDIRS and SOURCE
@@ -8,7 +8,7 @@ all: hexdump
 # A list of include directories
 INCLUDEDIRS =
 # A list of source files
-SOURCE = hexdump.c hd.c
+SOURCE = spooler.c jukebox.c requester.c songs.c
 
 ifeq ($(origin CC),default)
 CC = gcc
@@ -20,7 +20,8 @@ endif
 # -Wextra:		        Enable additional warnings not covered by "-Wall"
 # -Wpedantic:	        Reject everything that is not ISO C
 # -g					Generates debug information to be used by GDB debugger
-WFLAGS = -Wall -Wextra -Wpedantic
+# -pthread				Enable the pthread library
+WFLAGS = -Wall -Wextra -Wpedantic -g -pthread
 
 # Compile without sanitizers and disable optimisation
 # $(SOURCE): 	        Input file(s)
@@ -31,7 +32,7 @@ WFLAGS = -Wall -Wextra -Wpedantic
 # -O0:			        Do not optimize the program
 # $(WFLAGS)             Warning flags
 
-hexdump: FORCE
+spooler: FORCE
 	$(CC) $(SOURCE) $(INCLUDEDIRS:%=-I%) -o $@.out -std=c11 -O0 $(WFLAGS)
 
 # Compile with address sanitizer enabled
@@ -76,6 +77,20 @@ ubsan: FORCE
 lsan: FORCE
 	$(CC) $(SOURCE) $(INCLUDEDIRS:%=-I%) -o $@.out -std=c11 -O0 $(WFLAGS) -Werror -fsanitize=leak
 
+# Compile with thread sanitizer enabled
+# $(SOURCE): 		    Input file(s)
+# $(INCLUDEDIRS:%=-I%)  Include directories
+# -o: 				    Link the resulting object files
+# $@.out:	            Built-in variable representing the current target name + file extension .out
+# -std=c11              Set C standard
+# -O0:				    Do not optimize the program
+# $(WFLAGS)             Warning flags
+# -Werror:			    Treat all warnings as errors
+# -fsanitize=thread	    Thread sanitizer
+#                       (https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual)
+tsan: FORCE
+	$(CC) $(SOURCE) $(INCLUDEDIRS:%=-I%) -o $@.out -std=c11 -O0 $(WFLAGS) -Werror -fsanitize=thread
+
 # Compile with GCC static analysis enabled
 # $(SOURCE): 			Input file(s)
 # $(INCLUDEDIRS:%=-I%)  Include directories
@@ -92,7 +107,7 @@ staticAnalysis: FORCE
 
 # Execute the compiled programm
 run:
-	./hexdump.out
+	./spooler.out
 
 # Make sure we always rebuild
 # Required for the tester
