@@ -9,8 +9,10 @@ void printHelp(char* progName);
 bool stringCompare(char* s1, char* s2);
 
 int main(int argc, char* argv[]){
-	if (argc != 6)
+	if (argc != 6){
 		printHelp(argv[0]);
+		return EXIT_FAILURE;
+	}
 	else {
 		if (stringCompare(argv[1], "-jukebox\0") && stringCompare(argv[2], "-path\0") && stringCompare(argv[4], "-delay\0")) {
 			runJukebox(argv[3], charToInt(argv[5]));
@@ -23,7 +25,10 @@ int main(int argc, char* argv[]){
 			}
 			requestSong(argv[3],id);
 		}
-		else printHelp(argv[0]);
+		else{ 
+			printHelp(argv[0]);
+			return EXIT_FAILURE;
+		}
 	}
 	return 0;
 }
