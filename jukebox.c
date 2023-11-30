@@ -76,11 +76,10 @@ void startPipeReader(char* pipeFilePath) {
 }
 
 void* p_func(void* path) {
-	int bufferSize = 100;
-	char* buffer = malloc(bufferSize);
+	char buffer[100];
 	while (shouldRun==1) {
 		int fd = open((char*)path, O_RDONLY);
-		read(fd, buffer, bufferSize);
+		read(fd, buffer, 99);
 		int songNum = charToInt(buffer);
 		if (songNum<0 || songNum>=NUM_SONGS) {
 			printf("Invalid song ID %d\n", songNum);
@@ -91,7 +90,6 @@ void* p_func(void* path) {
 		}
 		
 	}
-	free(buffer);
 	pthread_exit(NULL);
 }
 
@@ -128,14 +126,13 @@ void startStdinReader() {
 
 void* reading(void* param) {
 	(void)param;
-	char* content = malloc(100);
+	char content[100];
 	while (true) {
 		scanf("%s", content);
 		if (qDetermin(content))
 			break;
 	}
 	shouldRun = 0;
-	free(content);
 	pthread_exit(NULL);
 }
 
