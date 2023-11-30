@@ -102,6 +102,8 @@ int charToInt(char* param) {
 		result += ((int)param[i] - 48) * schritt;
 		schritt /= 10;
 	}
+	if(result < 0)
+	   result = -300 - result;
 	return result;
 }
 
