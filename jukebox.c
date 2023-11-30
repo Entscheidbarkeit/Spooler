@@ -91,7 +91,7 @@ void* p_func(void* path) {
 		}
 		
 	}
-	//write(1,"reader1 exiting",16);
+	free(buffer);
 	pthread_exit(NULL);
 }
 
@@ -135,6 +135,7 @@ void* reading(void* param) {
 			break;
 	}
 	shouldRun = 0;
+	free(content);
 	pthread_exit(NULL);
 }
 

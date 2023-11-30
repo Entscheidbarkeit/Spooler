@@ -28,6 +28,7 @@ int main(int argc, char* argv[]){
 	else {
 		if (stringCompare(argv[1], "-jukebox\0") && stringCompare(argv[2], "-path\0") && stringCompare(argv[4], "-delay\0")) {
 			runJukebox(argv[3], charToInt(argv[5]));
+			return 0;
 		}
 		else if (stringCompare(argv[1], "-request\0") && stringCompare(argv[2], "-path\0") && stringCompare(argv[4], "-id\0")) {
 			int id = charToInt(argv[5]);
@@ -36,6 +37,7 @@ int main(int argc, char* argv[]){
 				return EXIT_FAILURE;
 			}
 			requestSong(argv[3],id);
+			return 0;
 		}
 		else{ 
 			printHelp(argv[0]);
