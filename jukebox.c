@@ -23,6 +23,8 @@ void runJukebox(char* pipeFilePath, int delay) {
 	shouldRun = 1;
 	startStdinReader();
 	startPipeReader(pipeFilePath);
+	//pthread_detach(reader1);
+	//pthread_detach(reader2);
 	while (shouldRun == 1) {
 		int nextSong = max(votes);
 		int pid = getpid();
@@ -42,10 +44,15 @@ void runJukebox(char* pipeFilePath, int delay) {
 			}
 			votes[nextSong] = 0;
 		}
+		//printf("sleeping\n");
 		sleep(1);
 	}
-	//pthread_kill(reader1, SIGKILL);
-	//pthread_kill(reader2, SIGKILL);
+	//printf("waiting on reader2");
+	pthread_join(reader2, NULL);
+	pthread_cancel(reader1);
+	//printf("waiting on reader1");
+	pthread_join(reader1, NULL);
+	
 	wait((int*)WNOHANG);
 	printf("Goodbye\n");
 	exit(0);
@@ -82,7 +89,9 @@ void* p_func(void* path) {
 			printf("Vote for song id %d received.\n", songNum);
 			votes[songNum]++;
 		}
+		sleep(1);
 	}
+	//write(1,"reader1 exiting",16);
 	pthread_exit(NULL);
 }
 
