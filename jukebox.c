@@ -89,7 +89,7 @@ void* p_func(void* path) {
 			printf("Vote for song id %d received.\n", songNum);
 			votes[songNum]++;
 		}
-		sleep(1);
+		
 	}
 	//write(1,"reader1 exiting",16);
 	pthread_exit(NULL);
