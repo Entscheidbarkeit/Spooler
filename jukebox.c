@@ -74,8 +74,8 @@ void* p_func(void* path) {
 		int fd = open((char*)path, O_RDONLY);
 		read(fd, buffer, bufferSize);
 		int songNum = charToInt(buffer);
-		if (songNum<0 || songNum>NUM_SONGS) {
-			printf("Invalid song ID %d. Has to be from range 0 to %d\n", songNum, NUM_SONGS);
+		if (songNum<0 || songNum>=NUM_SONGS) {
+			printf("Invalid song ID %d\n", songNum);
 		}
 		else {
 			printf("Vote for song id %d received.\n", songNum);

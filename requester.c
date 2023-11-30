@@ -8,7 +8,7 @@
 #include "requester.h"
 
 void requestSong(char* pipeFilePath, int songId) {
-	printf("Requesting song %d...", songId);
+	printf("Requesting song %d...\n", songId);
 	int fd = open(pipeFilePath, O_WRONLY);
 	dprintf(fd, "%d\n", songId);
 	printf("Song %d requested.\n", songId);

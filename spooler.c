@@ -10,8 +10,16 @@ bool stringCompare(char* s1, char* s2);
 
 int main(int argc, char* argv[]){
 	if (argc != 6){
-		printHelp(argv[0]);
-		return EXIT_FAILURE;
+		if(argc == 2){
+			if(stringCompare(argv[1],"--help")){
+				printHelp(argv[0]);
+				return 0;
+			}
+			else{
+				printHelp(argv[0]);
+				return EXIT_FAILURE;
+			}
+		}
 	}
 	else {
 		if (stringCompare(argv[1], "-jukebox\0") && stringCompare(argv[2], "-path\0") && stringCompare(argv[4], "-delay\0")) {
@@ -19,7 +27,7 @@ int main(int argc, char* argv[]){
 		}
 		else if (stringCompare(argv[1], "-request\0") && stringCompare(argv[2], "-path\0") && stringCompare(argv[4], "-id\0")) {
 			int id = charToInt(argv[5]);
-			if (id < 0 || id > NUM_SONGS) {
+			if (id < 0 || id >= NUM_SONGS) {
 				printf("Invalid song ID %d. Has to be from range 0 to %d\n", id, NUM_SONGS);
 				return EXIT_FAILURE;
 			}
