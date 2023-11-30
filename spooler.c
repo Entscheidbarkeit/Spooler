@@ -11,7 +11,7 @@ bool stringCompare(char* s1, char* s2);
 int main(int argc, char* argv[]){
 	if (argc != 6){
 		if(argc == 2){
-			if(stringCompare(argv[1],"--help\0")){
+			if(stringCompare(argv[1],"-help\0")){
 				printHelp(argv[0]);
 				return 0;
 			}
