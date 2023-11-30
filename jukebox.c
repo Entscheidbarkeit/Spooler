@@ -29,17 +29,18 @@ void runJukebox(char* pipeFilePath, int delay) {
 		if (votes[nextSong] != 0) {
 			pid = fork();
 			if (pid == 0) { // child process
-				votes[nextSong] = 0;
 				printf("Playing: %s\n", SONGS[nextSong].title);
 				for (size_t i = 0; i < SONGS[nextSong].lines; i++) {
 					printf("%s", SONGS[nextSong].lyrics[i]);
 					sleep(delay);
 				}
 				exit(0);
+				break;
 			}
 			else { // father process
 				wait((int*)WNOHANG);
 			}
+			votes[nextSong] = 0;
 		}
 		sleep(1);
 	}
